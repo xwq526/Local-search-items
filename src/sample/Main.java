@@ -1,19 +1,19 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
+import javafx.util.Callback;
 
 
 public class Main extends Application {
@@ -50,15 +50,62 @@ public class Main extends Application {
             }
         });
 
+
+
+        //关于"表"的实验
+
+        TableView<Student> tableView = new TableView<Student>();
+        gridPane.add(tableView,0,3);
+        controller.tableView = tableView;
+
+        //表中有哪些列
+        TableColumn<Student,String> idColum = new TableColumn<>();
+        idColum.setText("#id");
+
+//        idColum.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Student, String>, ObservableValue<String>>() {
+//            @Override
+//            public ObservableValue<String> call(TableColumn.CellDataFeatures<Student, String> param) {
+//                Student student = param.getValue();
+//                String idStr = String.valueOf(student.id);
+//                return new SimpleStringProperty(idStr);
+//            }
+//        });
+        idColum.setCellValueFactory(param -> param.getValue().getIdValue());
+        tableView.getColumns().add(idColum);
+
+        TableColumn<Student,String> nameColum = new TableColumn<>();
+        nameColum.setText("姓名");
+        nameColum.setCellValueFactory(param -> param.getValue().getNameValue());
+        tableView.getColumns().add(nameColum);
+
+        TableColumn<Student,String> ageColum = new TableColumn<>();
+        ageColum.setText("年龄");
+        ageColum.setCellValueFactory(param -> param.getValue().getAgeValue());
+        tableView.getColumns().add(ageColum);
+
+        TableColumn<Student,String> genderColum = new TableColumn<>();
+        genderColum.setText("性别");
+        genderColum.setCellValueFactory(param -> param.getValue().getGenderValue());
+        tableView.getColumns().add(genderColum);
+        //关于”表“的实验结束
+
+
+
+
+
+
+
+
         return gridPane;
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 //        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        Parent root = build();
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        Parent root = FXMLLoader.load(getClass().getResource("file-scan.fxml"));
+//        Parent root = build();
+        primaryStage.setTitle("徐文青");
+        primaryStage.setScene(new Scene(root, 1100, 550));
         primaryStage.show();
     }
 
